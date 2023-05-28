@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 
 struct RelativeLineCommand: DrawCommand {
-    static let identifier: String = "L"
+    static let identifier: String = "l"
     let x: Double
     let y: Double
 
