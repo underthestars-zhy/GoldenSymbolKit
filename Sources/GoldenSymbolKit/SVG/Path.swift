@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RegexBuilder
 
 struct Path {
     let raw: String
@@ -16,8 +17,20 @@ struct Path {
         self.modifiers = modifiers
     }
 
-    func svg() -> String {
-        "<path d=\"\(raw)\" \\>"
+    func attribute(of name: String) throws -> String? {
+        let regex = Regex {
+            "name=\""
+
+            Capture {
+                OneOrMore(.any, .reluctant)
+            }
+
+            "\""
+        }
+
+        guard let match = try regex.firstMatch(in: raw)?.output.1 else { return nil }
+
+        return String(match)
     }
 
     mutating func add(modifier: Modifier) {
@@ -26,32 +39,5 @@ struct Path {
 
     enum Modifier {
         case scale(ratio: Double)
-    }
-
-    func translateSVGPath(_ path: String, _ translationX: Double, _ translationY: Double) -> String {
-        var translatedPath = ""
-
-        let components = path.components(separatedBy: CharacterSet(charactersIn: "MLCZ")).filter { !$0.isEmpty }
-
-        for component in components {
-            let command = component.prefix(1)
-            let values = component.dropFirst().components(separatedBy: ",")
-
-            var translatedValues = [String]()
-
-            for i in stride(from: 0, to: values.count, by: 2) {
-                if let x = Double(values[i]), let y = Double(values[i + 1]) {
-                    let translatedX = x + translationX
-                    let translatedY = y + translationY
-                    translatedValues.append("\(translatedX),\(translatedY)")
-                }
-            }
-
-            if !translatedValues.isEmpty {
-                translatedPath += "\(command)\(translatedValues.joined(separator: ",")))"
-            }
-        }
-
-        return translatedPath
     }
 }

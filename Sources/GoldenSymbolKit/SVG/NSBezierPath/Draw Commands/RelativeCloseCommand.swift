@@ -8,7 +8,7 @@
 import Foundation
 import Cocoa
 
-struct CloseCommand: DrawCommand {
+struct RelativeCloseCommand: DrawCommand {
     static let identifier: String = "z"
 
     init(values: [Double]) {

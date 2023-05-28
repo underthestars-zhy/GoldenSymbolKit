@@ -8,9 +8,13 @@
 import Foundation
 
 extension GoldenSymbolKit {
+    func format(svg: String) -> String {
+        svg.replacing("\n", with: " ").replacing("\t", with: " ")
+    }
+
     func findSVGPath(in svg: String) throws -> Path? {
-        let regex = #/d="(.+?)"/#
-        guard let path = try regex.firstMatch(in: svg)?.output.1 else { return nil }
+        let regex = #/<path (.+?)/>/#
+        guard let path = try regex.firstMatch(in: format(svg: svg))?.output.0 else { return nil }
         return Path(raw: String(path))
     }
 
