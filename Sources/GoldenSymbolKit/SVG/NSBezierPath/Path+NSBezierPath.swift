@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 
 extension Path {
-    func seprateDrawCommands() throws -> [DrawCommand] {
+    func drawCommands() throws -> [DrawCommand] {
         guard let rawCommands = try self.attribute(of: "d") else { return [] }
 
         var drawCommands = [DrawCommand]()

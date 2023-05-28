@@ -19,12 +19,12 @@ struct Path {
 
     func attribute(of name: String) throws -> String? {
         let regex = Regex {
-            "name=\""
-
+            "\(name)=\""
             Capture {
-                OneOrMore(.any, .reluctant)
+                OneOrMore(.reluctant) {
+                    #/./#
+                }
             }
-
             "\""
         }
 

@@ -15,4 +15,12 @@ final class GoldenSymbolKitTests: XCTestCase {
         // results.
         print(try GoldenSymbolKit().findSVGPath(in: svg) ?? "No Res")
     }
+
+    func testFindPathDrawCommands() throws {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct
+        // results.
+        let path = try GoldenSymbolKit().findSVGPath(in: svg)!
+        print(try path.drawCommands())
+    }
 }
