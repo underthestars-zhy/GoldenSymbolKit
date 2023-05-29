@@ -7,14 +7,13 @@
 
 import Foundation
 import RegexBuilder
+import Cocoa
 
 struct Path {
     let raw: String
-    var modifiers: [Modifier]
 
-    init(raw: String, modifiers: [Modifier] = []) {
+    init(raw: String) {
         self.raw = raw
-        self.modifiers = modifiers
     }
 
     func attribute(of name: String) throws -> String? {
@@ -33,11 +32,35 @@ struct Path {
         return String(match)
     }
 
-    mutating func add(modifier: Modifier) {
-        self.modifiers.append(modifier)
+    func modifie(by modifiers: [Modifier]) throws -> String {
+        var transformString = ""
+        let bezierPath = try self.toNSBezierPath()
+
+        for modifier in modifiers {
+            transformString += modifier.transform(bezierPath) + " "
+        }
+
+        return """
+<g transform="\(transformString)">
+    \(raw)
+</g>
+"""
     }
 
     enum Modifier {
+        case translate(x: Double, y: Double)
         case scale(ratio: Double)
+        case rotate(degree: Double)
+
+        func transform(_ path: NSBezierPath) -> String {
+            switch self {
+            case .translate(x: let x, y: let y):
+                return "translate(\(x) \(y))"
+            case .rotate(degree: let degree):
+                return "rotate(\(degree))"
+            case .scale(ratio: let ratio):
+                return "scale(\(ratio))"
+            }
+        }
     }
 }
