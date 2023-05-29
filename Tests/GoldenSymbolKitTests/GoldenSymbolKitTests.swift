@@ -23,4 +23,12 @@ final class GoldenSymbolKitTests: XCTestCase {
         let path = try GoldenSymbolKit().findSVGPath(in: svg)!
         print(try path.drawCommands())
     }
+
+    func testTurnBezierPath() throws {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct
+        // results.
+        let path = try GoldenSymbolKit().findSVGPath(in: svg)!
+        let bezierPath = try path.toNSBezierPath()
+    }
 }

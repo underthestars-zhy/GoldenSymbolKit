@@ -59,8 +59,13 @@ extension Path {
         return drawCommands
     }
 
-    func toNSBezierPath() -> NSBezierPath {
+    func toNSBezierPath() throws -> NSBezierPath {
+        let commands = try drawCommands()
         let path = NSBezierPath()
+
+        for command in commands {
+            command.applyToNSBezierPath(path: path)
+        }
 
         return path
     }
