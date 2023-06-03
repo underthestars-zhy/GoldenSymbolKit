@@ -39,7 +39,16 @@ final class GoldenSymbolKitTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
         let path = try GoldenSymbolKit().findSVGPath(in: svg)!
-        let new = try path.modifie(by: [.rotate(degree: 90), .scale(ratio: 0.3), .translate(x: 2, y: 1)])
+        let new = try path.modifie(by: [.rotate(degree: 90)])
+        print(new)
+    }
+
+    func testCreateSimpleModifiedString() throws {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct
+        // results.
+        let path = try GoldenSymbolKit().findSVGPath(in: svg)!
+        let new = try path.modifie(translation: (dx: 1200, dy: 1200), rotation: 0, scale: 2)
         print(new)
     }
 }
